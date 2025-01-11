@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom's Ultimate Ski and Snowboards</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to an external stylesheet -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .hero {
+            padding: 50px 20px;
+        }
+        .hero img {
+            width: 60%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .section {
+            padding: 30px 20px;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <img src="{{ url_for('static', filename='images/ski-and-snowboard-istockphoto.webp') }}" alt="Ski and Snowboards">
+        <p>Find the best gear, reserve rentals, or get your equipment tuned and repaired. We've got you covered!</p>
+    </div>
+
+    <div class="section">
+        <h2><a href="/store">Find New Gear</a></h2>
+        <p>Looking for top brands or something local? Explore our wide selection of winter wear, skis, snowboards, and more!</p>
+    </div>
+
+    <div class="section">
+        <h2><a href="/reservation">Reserve a Rental</a></h2>
+        <p>In town for a short time or want to try before you buy? We provide rentals in all sizes to suit your needs.</p>
+    </div>
+
+    <div class="section">
+        <h2><a href="/workshop">Tune & Repair</a></h2>
+        <p>Need sharper edges or a fresh wax? Our expert workshop offers full tunes, waxing, and other repair services.</p>
+    </div>
+
+    <div class="section">
+        <h2><a href="/contact">Contact Us</a></h2>
+        <p>Have questions or need help? Reach out to our friendly team for personalized service.</p>
+    </div>
+</body>
+{% endblock %}

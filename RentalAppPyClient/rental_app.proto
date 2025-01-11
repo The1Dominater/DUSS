@@ -1,0 +1,37 @@
+syntax="proto3";
+
+message birthdayMsg {
+    int64 birthday = 1;
+}
+message dinMsg {
+    int32 age = 1;
+    int32 height = 2;
+    int32 h_unit = 3;
+    int32 weight = 4;
+    int32 w_unit = 5;
+    int32 skier_type = 6;
+}
+message totalMsg {
+    int32 eq_type = 1;
+    int32 lease_type = 2;
+    int32 pkg_type = 3;
+}
+message ageReply {
+    int32 age = 1;
+}
+message dinReply {
+    float din = 1;
+}
+message totalReply {
+    float total = 1;
+}
+
+service age {
+    rpc age(birthdayMsg) returns (ageReply) {}
+}
+service din {
+    rpc din(dinMsg) returns (dinReply) {}
+}
+service total {
+    rpc total(totalMsg) returns (totalReply) {}
+}

@@ -1,0 +1,1183 @@
+{% extends "base.html" %} {% block title %} Reservation {% endblock %}
+
+{% block content %}
+<div name="reservation_form_div">
+    <form id="reservation_form" action="/reservation" method="POST">
+        <div name="basic_info_form" id="part_1" class="form-group" style="display: block;">
+            <div name="page_title">
+                <h1 align="center">Renter Information</h1>
+            </div>
+
+            <div name="plContent">
+                <h3>Party Leader Information</h3>
+                <p>These details should describe the person responible for the party!</p>
+    
+                <div id="plContainer_1">
+                    <input type="checkbox" id="use-profile" name="use-profile" checked>
+                    <label for="use-profile">Use account profile information</label>
+                    <br/>
+            
+                    <label for="first_name_0">First Name:</label>
+                    <input 
+                        type="text" 
+                        id="first_name_0" 
+                        name="first_name_0" 
+                        value="{{ request.form.get('first_name_0') }}"
+                        data-index="0"
+                        required>
+                    <br/>
+                    
+                    <label for="last_name_0">Last Name:</label>
+                    <input 
+                        id="last_name_0" 
+                        name="last_name_0" 
+                        type="text" 
+                        value="{{ request.form.get('last_name_0') }}" 
+                        data-index="0"
+                        required>
+                    <br/>
+                    
+                    <label for="birthday_0">Birthday:</label>
+                    <input 
+                        type="date" 
+                        id="birthday_0" 
+                        name="birthday_0" 
+                        value="{{ request.form.get('birthday_0') }}" 
+                        max="{{ min_pl_age }}" 
+                        min="{{ max_age }}" 
+                        required>
+                    <p style="display: inline; margin: 0px;">(Party Leader must be 18+)</p>                
+                    <br/>
+                    
+                    <label for="telephone">Telephone Number:</label>
+                    <input type="tel" id="telephone" name="telephone" value="{{ request.form.get('telephone') }}" required>
+                    <br/>
+                </div>
+            </div>
+                
+            <div name="guestContent">
+                <h3>Additional Guests</h3>
+                <p>These details should describe other members of the party!</p>
+                <div id="guestContainer_1"></div>
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    id="add_guest_btn">+ Add Guest</button>
+            </div>
+    
+            <div name="nav_buttons" style="text-align: center;">
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    name="continue"
+                    onClick="goForward()"
+                    >Continue</button>
+            </div>
+        </div>
+
+        <div name="equipment_info_form" id="part_2" class="form-group" style="display: none;">
+            <div name="page_title">
+                <h1 align="center">Equipment Selection</h1>
+            </div>
+
+            <div name="plContent">
+                <div id="plContainer_2">
+                    <div name="pl_name_div">
+                        <h3 id="plName_pt2" class="guest_name_0"></h3>
+                    </div>
+
+                    <!-- Select equipment type -->
+                    <div name="eq_type_div">
+                        <label for="eq_type_0" style="margin-right: 10px;">Equipment Type:</label>
+                        <select
+                            id="eq_type_0" 
+                            name="eq_type_0" 
+                            class="form-control" 
+                            style="width: auto;" 
+                            data-index="0"
+                            value="{{ request.form.get('eq_type_0') }}"
+                            required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="ski">Ski</option>
+                            <option value="snowboard">Snowboard</option>
+                            <option value="snowshoe">Snowshoe</option>
+                            <option value="cc_ski">Cross Country Ski</option>
+                        </select>
+                    </div>
+
+                    <!-- Select lease type -->
+                    <div name="lease_type_div" id="pk_type_div_0" class="eq-div" style="margin-left: 20px; display: none;">
+                        {% if season_lease_available %}
+                        <label for="lease_type_0" style="margin-right: 10px;">Lease Type:</label>
+                        <select 
+                            id="lease_type_0" 
+                            name="lease_type_0" 
+                            class="form-control eq-field" 
+                            style="width: auto;"
+                            value="{{ request.form.get('lease_type_0') }}">
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="Seasonal">Seasonal Lease</option>
+                            <option value="Daily">Daily Lease</option>
+                        </select>
+                        {% endif %}
+                    </div>
+    
+                    <!-- Select package type -->
+                    <div name="pk_type_div_0" id="pk_type_div_0" class="eq-div" style="margin-left: 20px; display: none;">
+                        <label for="pk_type_0" style="margin-right: 10px;">Package Type</label>
+                        <select 
+                            id="pk_type_0" 
+                            name="pk_type_0" 
+                            class="form-control eq-field" 
+                            style="width: auto;"
+                            value="{{ request.form.get('pk_type_0') }}">
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="demo">Demo</option>
+                            <option value="premium">Premium</option>
+                            <option value="sport">Sport</option>
+                        </select>
+                    </div>
+                    
+                    <!-- If they are skiing display this additional form -->
+                    <div name="ski_details_0" id="ski_details_0" class="eq-div" style="margin-left: 20px; display: none;">
+                        <div name="sk_height">
+                            <label for="sk_height_0">Height</label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <input 
+                                    id="sk_height_0" 
+                                    name="height_0" 
+                                    type="number"
+                                    class="form-control eq-field" 
+                                    placeholder="Enter height"
+                                    style="min-width: 135px; width: auto; "
+                                    max="275"
+                                    min="1"
+                                    value="{{ request.form.get('height_0') }}"
+                                />
+                                <select
+                                    id="sk_hUnit_0"
+                                    name="hUnit_0" 
+                                    class="form-control eq-field" 
+                                    style="width: auto;"
+                                    value="{{ request.form.get('hUnit_0') }}">
+                                    <option value=1>in</option>
+                                    <option value=2>cm</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div name="weight">
+                            <label for="weight_0">Weight</label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <input
+                                    id="weight_0" 
+                                    name="weight_0"
+                                    type="number" 
+                                    class="form-control eq-field" 
+                                    placeholder="Enter weight"
+                                    style="min-width: 135px; width: auto;"
+                                    max="500"
+                                    min="1"
+                                    value="{{ request.form.get('weight_0') }}"
+                                />
+                                <select
+                                    id="wUnit_0" 
+                                    name="wUnit_0"
+                                    class="form-control eq-field" 
+                                    style="width: auto;"
+                                    value="{{ request.form.get('wUnit_0') }}">
+                                    <option value=1>lbs</option>
+                                    <option value=2>kg</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div name="skier_type">
+                            <label for="skier_type_0">Skier Type</label>
+                            <select
+                                id="skier_type_0"
+                                name="skier_type_0" 
+                                class="form-control eq-field" 
+                                style="width: auto;"
+                                value="{{ request.form.get('skier_type_0') }}">
+                                <option value='' disabled selected>Select an option</option>
+                                <option value=1>I - Beginner</option>
+                                <option value=2>II - Intermediate</option>
+                                <option value=3>III - Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- If they are snowboarding display this additonal form -->
+                    <div name="board_details_0" id="board_details_0" class="eq-div" style="margin-left: 20px; display: none;">
+                        <label for="sn_height_0">Height</label>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input 
+                                id="sn_height_0" 
+                                name="height_0" 
+                                type="number"
+                                class="form-control eq-field" 
+                                placeholder="Enter height"
+                                style="min-width: 135px; width: auto; "
+                                max="275"
+                                min="1"
+                                value="{{ request.form.get('height_0') }}"
+                            />
+                            <select
+                                id="sn_hUnit_0"
+                                name="hUnit_0" 
+                                class="form-control eq-field" 
+                                style="width: auto;"
+                                value="{{ request.form.get('hUnit_0') }}">
+                                <option value=1>in</option>
+                                <option value=2>cm</option>
+                            </select>
+                        </div>
+                        
+                        <label for="riding_style_0">Riding Style</label>
+                        <select 
+                            class="form-control eq-field" 
+                            id="riding_style_0" 
+                            name="riding_style_0" 
+                            style="width: auto;"
+                            value="{{ request.form.get('riding_style_0') }}">
+                            <option value='' disabled selected>Select an option</option>
+                            <option value=1>Regular-Left foot forward</option>
+                            <option value=2>Goofy-Right foot forward</option>
+                        </select>
+                        <label for="l_offset_0">Left Foot Offset</label>
+                        <input 
+                            type="number" 
+                            class="form-control eq-field" 
+                            id="l_offset_0" 
+                            name="l_offset_0" 
+                            placeholder="Enter left offset"
+                            min="-90"
+                            max="90"
+                            step="1"
+                            style="width: auto;"
+                            value="{{ request.form.get('l_offset_0') }}"
+                        />
+                        <label for="r_offset_0">Right Foot Offset</label>
+                        <input 
+                            type="number" 
+                            class="form-control eq-field" 
+                            id="r_offset_0" 
+                            name="r_offset_0"
+                            placeholder="Enter right offset"
+                            min="-90"
+                            max="90"
+                            step="1"
+                            style="width: auto;"
+                            value="{{ request.form.get('r_offset_0') }}"
+                        />
+                    </div>
+
+                    <!-- If they are snowshoeing display this additonal form -->
+                    <div name="snowshoe_details_0" id="snowshoe_details_0" class="eq-div" style="display: none;">
+                        <label for="size_0">Size</label>
+                        <select 
+                            class="form-control eq-field" 
+                            id="size_0" 
+                            name="size_0" 
+                            style="width: auto;">
+                            <option value='' disabled selected>Select an option</option>
+                            <option value=1>Extra Small</option>
+                            <option value=2>Small</option>
+                            <option value=3>Medium</option>
+                            <option value=4>Large</option>
+                            <option value=5>Extra Large</option>
+                        </select>
+                    </div>
+
+                    <!-- If they are cross country skiing display this additonal form -->
+                    <div name="cc_ski_details_0" id="cc_ski_details_0" class="eq-div" style="display: none;">
+                        <label for="weight_0">Weight</label>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <input
+                                id="weight_0" 
+                                name="weight_0"
+                                type="number" 
+                                class="form-control eq-field" 
+                                placeholder="Enter weight"
+                                style="min-width: 135px; width: auto;"
+                                max="500"
+                                min="1"
+                                value="{{ request.form.get('weight_0') }}"
+                            />
+                            <select
+                                id="wUnit_0" 
+                                name="wUnit_0"
+                                class="form-control eq-field"
+                                style="width: auto;"
+                                value="{{ request.form.get('wUnit_0') }}">
+                                <option value=1>lbs</option>
+                                <option value=2>kg</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div name="guestContent">
+                <div id="guestContainer_2"></div>
+            </div>
+    
+            <div name="nav_buttons" style="text-align: center;">
+                <br>
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    name="back" 
+                    onClick="goBack()">Back</button>
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    name="continue" 
+                    onClick="goForward()">Continue</button>
+            </div>
+        </div>
+        
+        <div name="rental_info_form" id="part_3" class="form-group" style="display: none;">
+            <div name="page_title">
+                <h1 align="center">Reservation Information</h1>
+            </div>
+
+            <div id="p_and_r_checkboxes" style="display: none;">
+                <label>
+                    Everyone will pick up on the same day
+                    <input type="checkbox" id="pickup_same_day" onclick="togglePickUpDate()" checked>
+                </label>
+                <br>
+                <label>
+                    Everyone will rent for the same number of days
+                    <input type="checkbox" id="return_same_day" onclick="toggleReturnDate()" checked>
+                </label>
+            </div>
+
+            <div name="plContent">
+                <div id="plContainer_3">
+                    <div name="pl_name_div">
+                        <h3 id="plName_pt3" class="guest_name_0"></h3>
+                    </div>
+                    <div name="pickup_date">
+                        <label for="pickup_date_0">Pickup Date:</label>
+                        <input 
+                            id="pickup_date_0"
+                            name="pickup_date_0"
+                            type="date" 
+                            min="{{ max_pickup }}" 
+                            max="{{ today }}"
+                            value="{{ request.form.get('pickup_date_0') }}"
+                            required
+                            >
+                    </div>
+                    <div name="number_of_rental_days">
+                        <label for="rental_days_0" style="display: inline;">Number of Days:</label>
+                        <input 
+                            id="rental_days_0" 
+                            name="rental_days_0"
+                            type="number" 
+                            value="0"
+                            min="1" 
+                            max="{{ max_return }}"
+                            style="display: inline; margin: 0px; width: 45px;"
+                            value="{{ request.form.get('rental_days_0') }}"
+                            required>
+                        <p style="display: inline; margin: 0px;">(This is the number of days the gear will be used/charged for)</p>                
+                    </div>
+                    <br>
+                    <div name="note">
+                        <label for="note_0">Notes(optional)</label>
+                        <textarea
+                            id="note_0"
+                            name="note_0"
+                            class="form-control" 
+                            placeholder="Optional info you may want us to know(e.g. pronouns)"
+                            value="{{ request.form.get('note_0') }}"></textarea>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            
+            <div name="guestContent">
+                <div id="guestContainer_3"></div>
+            </div>
+
+            <div name="nav_buttons" style="text-align: center;">
+                <br>
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    name="back" 
+                    onClick="goBack()">Back</button>
+                <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    name="continue" 
+                    onClick="goForward()">Continue</button>
+            </div>
+        </div>
+
+        <div name="reservation_review" id="part_4" class="form-group" style="display: none;">
+            <div name="page_title">
+                <h1 align="center">Review Reservation Information</h1>
+            </div>
+
+            <div name="plContent">
+                <div id="plContainer_4">
+                    <div class="review-box" onclick="toggleReviewDetails(this)">
+                        <div class="review-header">
+                            <div id="plName_pt4" class="guest_name_0 review-name"></div>
+                            <div class="dropdown-arrow">↓</div>
+                        </div>
+                        <div class="review-details">
+                            <div><strong>Birthday: </strong>
+                                <p id="review_birthday_0" style="display: inline; margin: 0px;"></p>
+                            </div>
+                            <div><strong>Telephone: </strong>  
+                                <p id="review_telephone" style="display: inline; margin: 0px;"></p>
+                            </div>
+                            <div><strong>Equipment Type: </strong> 
+                                <p id="review_eq_type_0" style="display: inline; margin: 0px;"></p>
+                            </div>
+                            <div><strong>Pickup Date: </strong>  
+                                <p id="review_pickup_date_0" style="display: inline; margin: 0px;"></p>
+                            </div> 
+                            <div><strong>Number of Days: </strong>
+                                <p id="review_rental_days_0" style="display: inline; margin: 0px;"></p>
+                            </div>
+                            <div><strong>Notes</strong>
+                                <div id="review_note_0" style="padding-left: 20px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div name="guestContent">
+                <div id="guestContainer_4"></div>
+            </div>
+
+            <div name="nav_buttons" style="text-align: center;">
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    name="back" 
+                    onClick="goBack()">Back</button>
+                <button 
+                    type="submit" 
+                    class="btn btn-primary" 
+                    name="finish">Finish</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="customAlert" class="custom-alert">
+        <div class="alert-content">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-message">Maximum number of guests reached.</span>
+          <button class="close-btn" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+</div>
+
+<div name="java_script">
+    <script name="navigation_btns">
+        // Get all div elements with class 'form-group'
+        const form = document.getElementById("reservation_form")
+        let formGroupDivs = document.querySelectorAll('div.form-group');
+        // Count the number of elements
+        let num_parts = formGroupDivs.length;
+        let part_index = 1;
+        var current_part = document.getElementById(`part_${part_index}`);
+
+        // Changes display to show next part of the form
+        function goForward() {
+            if (checkRequiredInputs(current_part) && (part_index < num_parts)) {
+                // Hide the current part
+                current_part.style.display = 'none';
+                // Display the next part
+                part_index++;
+                current_part = document.getElementById(`part_${part_index}`);
+                current_part.style.display = 'block';
+            }
+            // If we are navigating to the final part gather and display view details
+            if (part_index >= num_parts) {
+                fillReviewDetails();
+            }
+
+            console.log("Part_index: " + part_index);
+        }
+        // Changes display to show previous part of the form
+        function goBack() {
+            if (part_index > 1) {
+                // Hide the current part
+                current_part.style.display = 'none';
+                // Display the next part
+                part_index--;
+                current_part = document.getElementById(`part_${part_index}`);
+                current_part.style.display = 'block';
+            }
+            console.log("Part_index: " + part_index)
+        } 
+        // Checks to make sure all the elements are filled before changine the part
+        function checkRequiredInputs(current_part) {
+            current_fields = current_part.querySelectorAll('input[required], select[required]')
+
+            let isValid = true;
+
+            current_fields.forEach(field => {
+                if (field.checkValidity()) {
+                    // Remove highlight if valid
+                    field.classList.remove('error-field');
+                } else {
+                    // If it is the first error indicate what is wrong
+                    if (isValid) {
+                        field.reportValidity();
+                    }
+                    
+                    // Highlight invalid input in red
+                    field.classList.add('error-field');  
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+    </script>
+
+    <script name="auto_fill_pl_info">
+        // Get reference to the checkbox and input fields
+        const useProfileCheckbox = document.getElementById('use-profile');
+        const plFirstNameInput = document.getElementById('first_name_0');
+        const plLastNameInput = document.getElementById('last_name_0');
+
+        // Function to toggle the values based on checkbox state
+        function toggleProfileFields() {
+            if (useProfileCheckbox.checked) {
+                // If the checkbox is checked, use the values from the db
+                plFirstNameInput.value = "{{ first_name }}";
+                plLastNameInput.value = "{{ last_name }}";
+
+                const nameElements = document.querySelectorAll(`.guest_name_0`);
+                nameElements.forEach(element => {
+                    element.innerText = `${plFirstNameInput.value} ${plLastNameInput.value}`;
+                });
+            } else {
+                // If the checkbox is unchecked, clear the fields and disable them
+                plFirstNameInput.value = "";
+                plLastNameInput.value = "";
+
+                const nameElements = document.querySelectorAll(`.guest_name_0`);
+                nameElements.forEach(element => {
+                    element.innerText = 'Party Leader';
+                });
+            } 
+        }
+        // Listen for changes to the checkbox
+        useProfileCheckbox.addEventListener('change', toggleProfileFields);
+        
+        // Listen for changes to party leader's name
+        plFirstNameInput.addEventListener('change', function () { updateName(this); });
+        plLastNameInput.addEventListener('change', function () { updateName(this); });
+
+        // Call the functions on page load to set the initial state
+        toggleProfileFields();
+    </script>
+
+    <script name="add_remove_guests">
+        // Create a new guest input field if the Add guest button is pressed
+        const addGuestBtn = document.getElementById('add_guest_btn')
+        let guestCount = 1;
+        const maxGuests = 12;
+
+        function addGuest() {
+            if (guestCount < maxGuests) {
+                const guestContainer_1 = document.getElementById('guestContainer_1');
+                const newGuestInfo = document.createElement('div');
+                newGuestInfo.setAttribute('data-guest-id', guestCount) // Used to remove guest
+                newGuestInfo.innerHTML = `
+                    <div>
+                        <label for="first_name_${guestCount}">First Name:</label>
+                        <input
+                            id="first_name_${guestCount}" 
+                            name="first_name_${guestCount}"
+                            type="text" 
+                            data-index="${guestCount}"
+                            value="{{ request.form.get('first_name_${guestCount}') }}"
+                            required>
+                        <label for="last_name_${guestCount}">Last Name:</label>
+                        <input
+                            id="last_name_${guestCount}" 
+                            name="last_name_${guestCount}"
+                            type="text" 
+                            data-index="${guestCount}"
+                            value="{{ request.form.get('last_name_${guestCount}') }}"
+                            required>
+                        <label for="birthday_${guestCount}">Birthday:</label>
+                        <input 
+                            id="birthday_${guestCount}" 
+                            name="birthday_${guestCount}" 
+                            type="date"  
+                            max="{{ today }}" 
+                            min="{{ max_age }}"
+                            value="{{ request.form.get('birthday_${guestCount}') }}"
+                            required>
+                        <button type="button" class="removeGuest" style="color: gray; background: none; border: none; font-size: 18px; cursor: pointer; margin-left: 5px; margin-top: 5px;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                guestContainer_1.appendChild(newGuestInfo);
+
+                const guestContainer_2 = document.getElementById('guestContainer_2');
+                const newGuestEquipment = document.createElement('div');
+                newGuestEquipment.setAttribute('data-guest-id', guestCount)
+                newGuestEquipment.innerHTML = `
+                    <div>
+                        <br>
+                        <div name="guest_name" style="display: flex; align-items: center;">
+                            <h3 id="guestName_pt2_${guestCount}" class="guest_name_${guestCount}" style="margin: 0;"></h3>
+                            <button 
+                                type="button" 
+                                class="removeGuest" 
+                                style="color: gray; background: none; border: none; font-size: 18px; cursor: pointer; margin-left: 5px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <!-- Select equipment type -->
+                        <div name="eq_type">
+                            <label for="eq_type_${guestCount}" style="margin-right: 10px;">Equipment Type</label>
+                            <select
+                                id="eq_type_${guestCount}" 
+                                name="eq_type_${guestCount}" 
+                                class="form-control" 
+                                style="width: auto;" 
+                                data-index="${guestCount}"
+                                value="{{ request.form.get('eq_type_${guestCount}') }}"
+                                required>
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="ski">Ski</option>
+                                <option value="snowboard">Snowboard</option>
+                                <option value="snowshoe">Snowshoe</option>
+                                <option value="cc_ski">Cross Country Ski</option>
+                            </select>
+                        </div>
+        
+                        <!-- Select lease type -->
+                        <div name="lease_type">
+                            {% if season_lease_available %}
+                            <label for="lease_type_${guestCount}" style="margin-left: 20px;">Lease Type:</label>
+                            <select 
+                                id="lease_type_${guestCount}" 
+                                name="lease_type_${guestCount}" 
+                                class="form-control" 
+                                style="width: auto;"
+                                value="{{ request.form.get('lease_type_${guestCount}') }}">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="seasonal">Seasonal Lease</option>
+                                <option value="daily">Daily Lease</option>
+                            </select>
+                            {% endif %}
+                        </div>
+
+                        <!-- Select package type -->
+                        <div name="pk_type_div" id="pk_type_div_${guestCount}" style="display: none;">
+                            <label for="pk_type_${guestCount}" style="margin-left: 20px;">Package Type</label>
+                            <select 
+                                id="pk_type_${guestCount}" 
+                                name="pk_type_${guestCount}" 
+                                class="form-control" 
+                                style="width: auto;"
+                                value="{{ request.form.get('pk_type_${guestCount}') }}">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="demo">Demo</option>
+                                <option value="premium">Premium</option>
+                                <option value="sport">Sport</option>
+                            </select>
+                        </div>
+                        
+                        <!-- If they are skiing display this additional form -->
+                        <div name="ski_details_${guestCount}" id="ski_details_${guestCount}" style="margin-left: 20px; display: none;">
+                            <div name="sk_height">
+                                <label for="sk_height_${guestCount}">Height</label>
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <input 
+                                        id="sk_height_${guestCount}" 
+                                        name="height_${guestCount}" 
+                                        type="number"
+                                        class="form-control" 
+                                        placeholder="Enter height"
+                                        style="width: auto;"
+                                        max="275"
+                                        min="1"
+                                        value="{{ request.form.get('height_${guestCount}') }}"
+                                    />
+                                    <select
+                                        id="sk_hUnit_${guestCount}"
+                                        name="hUnit_${guestCount}" 
+                                        class="form-control" 
+                                        style="width: auto;"
+                                        value="{{ request.form.get('hUnit_${guestCount}') }}">
+                                        <option value=1>in</option>
+                                        <option value=2>cm</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div name="weight">
+                                <label for="weight_${guestCount}">Weight</label>
+                                <div style="display: flex; align-items: center; gap: 5px;">
+                                    <input
+                                        id="weight_${guestCount}" 
+                                        name="weight_${guestCount}"
+                                        type="number" 
+                                        class="form-control" 
+                                        placeholder="Enter weight"
+                                        style="width: auto;"
+                                        max="500"
+                                        min="1"
+                                        value="{{ request.form.get('weight_${guestCount}') }}"
+                                    />
+                                    <select
+                                        id="wUnit_${guestCount}" 
+                                        name="wUnit_${guestCount}"
+                                        class="form-control" 
+                                        style="width: auto;"
+                                        value="{{ request.form.get('wUnit_${guestCount}') }}">
+                                        <option value=1>lbs</option>
+                                        <option value=2>kg</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div name="skier_type">
+                                <label for="skier_type_${guestCount}">Skier Type</label>
+                                <select
+                                    id="skier_type_${guestCount}"
+                                    name="skier_type_${guestCount}" 
+                                    class="form-control" 
+                                    style="width: auto;"
+                                    value="{{ request.form.get('skier_type_${guestCount}') }}">
+                                    <option value='' disabled selected>Select an option</option>
+                                    <option value=1>I - Beginner</option>
+                                    <option value=2>II - Intermediate</option>
+                                    <option value=3>III - Advanced</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- If they are snowboarding display this additonal form -->
+                        <div name="board_details_${guestCount}" id="board_details_${guestCount}" style="display: none;">
+                            <label for="sn_height_${guestCount}">Height</label>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="sn_height_${guestCount}" 
+                                    name="height_${guestCount}" 
+                                    placeholder="Enter height"
+                                    style="width: auto;"
+                                    max="275"
+                                    min="1"
+                                    value="{{ request.form.get('height_${guestCount}') }}"
+                                />
+                                <select 
+                                    class="form-control" 
+                                    id="sn_hUnit_${guestCount}"
+                                    name="hUnit_${guestCount}" 
+                                    style="width: auto;"
+                                    value="{{ request.form.get('hUnit_${guestCount}') }}">
+                                    <option value=1>in</option>
+                                    <option value=2>cm</option>
+                                </select>
+                            </div>
+                            <label for="riding_style_${guestCount}">Riding Style</label>
+                            <select 
+                                id="riding_style_${guestCount}" 
+                                name="riding_style_${guestCount}" 
+                                class="form-control" 
+                                style="width: auto;"
+                                value="{{ request.form.get('riding_style_${guestCount}') }}">
+                                <option value='' disabled selected>Select an option</option>
+                                <option value=1>Regular-Left foot forward</option>
+                                <option value=2>Goofy-Right foot forward</option>
+                            </select>
+                            <label for="l_offset_${guestCount}">Left Foot Offset</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="l_offset_${guestCount}" 
+                                name="l_offset_${guestCount}" 
+                                placeholder="Enter left offset"
+                                min="-90"
+                                max="90"
+                                step="1"
+                                style="width: auto;"
+                                value="{{ request.form.get('l_offset_${guestCount}') }}"
+                            />
+                            <label for="r_offset_${guestCount}">Right Foot Offset</label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="r_offset_${guestCount}" 
+                                name="r_offset_${guestCount}"
+                                placeholder="Enter right offset"
+                                min="-90"
+                                max="90"
+                                step="1"
+                                style="width: auto;"
+                                value="{{ request.form.get('l_offset_${guestCount}') }}"
+                            />
+                        </div>
+
+                        <!-- If they are snowshoeing display this additonal form -->
+                        <div name="snowshoe_details_${guestCount}" id="snowshoe_details_${guestCount}" style="display: none;">
+                            <label for="size_${guestCount}">Size</label>
+                            <select 
+                                class="form-control" 
+                                id="size_${guestCount}" 
+                                name="size_${guestCount}" 
+                                style="width: auto;">
+                                <option value='' disabled selected>Select an option</option>
+                                <option value=1>Extra Small</option>
+                                <option value=2>Small</option>
+                                <option value=3>Medium</option>
+                                <option value=4>Large</option>
+                                <option value=5>Extra Large</option>
+                            </select>
+                        </div>
+                    </div>`;
+                guestContainer_2.appendChild(newGuestEquipment);
+
+                const guestContainer_3 = document.getElementById('guestContainer_3');
+                const newGuestDates = document.createElement('div');
+                newGuestDates.setAttribute('data-guest-id', guestCount)
+                newGuestDates.innerHTML = `
+                    <div>
+                        <div name="guest_name" style="display: flex; align-items: center;">
+                            <h3 id="guestName_pt3_${guestCount}" class="guest_name_${guestCount}" style="margin: 0;"></h3>
+                            <button 
+                                type="button" 
+                                class="removeGuest" 
+                                style="color: gray; background: none; border: none; font-size: 18px; cursor: pointer; margin-left: 5px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <div name="pickup_date">
+                            <label for="pickup_date_${guestCount}">Pickup Date:</label>
+                            <input 
+                                id="pickup_date_${guestCount}"
+                                name="pickup_date_${guestCount}"
+                                type="date" 
+                                min="{{ max_pickup }}" 
+                                max="{{ today }}"
+                                value="{{ request.form.get('pickup_date_${guestCount}') }}"
+                                required
+                                />
+                        </div>
+                        <div name="number_of_rental_days">
+                            <label for="rental_days_${guestCount}" style="display: inline;">Number of Days:</label>
+                            <input 
+                                id="rental_days_${guestCount}" 
+                                name="rental_days_${guestCount}"
+                                type="number" 
+                                value="1"
+                                min="1" 
+                                max="{{ max_return }}"
+                                style="display: inline; margin: 0px; width: 45px;"
+                                value="{{ request.form.get('rental_days_${guestCount}') }}"
+                                required>
+                            <p style="display: inline; margin: 0px;">(This is the number of days the gear will be used/charged for)</p>                
+                        </div>
+                        <br>
+                        <div name="notes">
+                            <label for="note_${guestCount}">Notes(optional)</label>
+                            <textarea
+                                id="note_${guestCount}"
+                                name="note_${guestCount}"
+                                class="form-control" 
+                                placeholder="Opitonal info you may want us to know(e.g. pronouns)"
+                                 value="{{ request.form.get('note_${guestCount}') }}"></textarea>
+                        </div>
+                    </div>`;
+                guestContainer_3.appendChild(newGuestDates);
+
+                const guestContainer_4 = document.getElementById('guestContainer_4');
+                const newGuestReview = document.createElement('div');
+                newGuestReview .setAttribute('data-guest-id', guestCount)
+                newGuestReview .innerHTML = `
+                    <div>
+                        <div class="review-box" onclick="toggleReviewDetails(this)">
+                            <div class="review-header">
+                                <div id="guestName_pt3_${guestCount}" class="guest_name_${guestCount} review-name"></div>
+                                <div class="dropdown-arrow">↓</div>
+                            </div>
+                            <div class="review-details">
+                                <div><strong>Birthday: </strong>
+                                    <p id="review_birthday_${guestCount}" style="display: inline; margin: 0px;"></p>
+                                </div>
+                                <div><strong>Equipment Type: </strong> 
+                                    <p id="review_eq_type_${guestCount}" style="display: inline; margin: 0px;"></p>
+                                </div>
+                                <div><strong>Pickup Date: </strong>  
+                                    <p id="review_pickup_date_${guestCount}" style="display: inline; margin: 0px;"></p>
+                                </div> 
+                                <div><strong>Number of Days: </strong>
+                                    <p id="review_rental_days_${guestCount}" style="display: inline; margin: 0px;"></p>
+                                </div>
+                                <div><strong>Notes</strong>
+                                    <div id="review_note_${guestCount}" style="padding-left: 20px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                guestContainer_4.appendChild(newGuestReview);
+
+                // Link the input field to update the other headers
+                const firstNameInput = document.getElementById(`first_name_${guestCount}`);
+                const lastNameInput = document.getElementById(`last_name_${guestCount}`);
+
+                // Listen for changes to party leaders name
+                firstNameInput.addEventListener('input', function () { updateName(this); });
+                lastNameInput.addEventListener('input', function () { updateName(this); });
+
+                // Add event listeners to toggle inputs
+                const equipmentType = document.getElementById(`eq_type_${guestCount}`);
+                equipmentType.addEventListener('change', function () { toggleEquipmentForm(this); });
+
+                // Add event listeners to the remove buttons
+                newGuestInfo.querySelector('.removeGuest').addEventListener('click', function () { removeGuest(this); });
+                newGuestEquipment.querySelector('.removeGuest').addEventListener('click', function () { removeGuest(this); });
+                newGuestDates.querySelector('.removeGuest').addEventListener('click', function () { removeGuest(this); });
+
+                // Set input fields for pick and return to match checkbox status
+                document.getElementById(`pickup_date_${guestCount}`).disabled = isPickupSameDay;
+                document.getElementById(`rental_days_${guestCount}`).disabled = isReturnSameDay;
+
+                //Increment guest count
+                guestCount++;
+
+            } else {
+                showAlert();
+            }
+
+            if (guestCount > 1) {
+
+            }
+        }
+        // Listen for request to add more guests
+        addGuestBtn.addEventListener('click', function () { 
+            addGuest();
+            displayCheckboxes();
+        });
+
+        function displayCheckboxes() {
+            const checkboxes = document.getElementById("p_and_r_checkboxes")
+
+            // If it's the first guest make the group checkboxes visible
+            if (guestCount > 1) {
+                const checkboxes = document.getElementById("p_and_r_checkboxes")
+                checkboxes.style.display = "block";
+            }
+            else {
+                checkboxes.style.display = "none";
+            }
+        }
+
+        function removeGuest(buttonElement) {
+            // Find the parent element that has the 'data-guest-id' attribute
+            const guestId = buttonElement.closest('[data-guest-id]').getAttribute('data-guest-id');
+
+            // Remove all elements with the corresponding data-guest-id
+            document.querySelectorAll(`[data-guest-id='${guestId}']`).forEach(element => element.remove());
+            guestCount--;  // Update the guest count
+
+            displayCheckboxes();
+        }
+
+        function showAlert() {
+            document.getElementById('customAlert').style.display = 'block';
+        }
+
+        function closeAlert() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+    </script>
+
+    <script name="update_guests_name">
+        function updateName(selectElement) {
+            const index = selectElement.getAttribute('data-index');
+            const firstName= document.getElementById(`first_name_${index}`).value;
+            const lastName = document.getElementById(`last_name_${index}`).value;
+
+            const nameElements = document.querySelectorAll(`.guest_name_${index}`);
+            nameElements.forEach(element => {
+                element.innerText = `${firstName} ${lastName}`;
+            });
+        };
+    </script>
+
+    <script name="toggle_equipment_form">
+        // Add event listeners to toggle inputs for party leader
+        const plEquipmentType = document.getElementById(`eq_type_0`);
+        plEquipmentType.addEventListener('change', function () { toggleEquipmentForm(this); });
+
+        function toggleEquipmentForm(selectElement) {
+            var index = selectElement.getAttribute('data-index'); // Retrieve the index from data-index
+            var equipmentType = selectElement.value;
+            
+            var pk_type = document.getElementById(`pk_type_div_${index}`);
+            var skiForm = document.getElementById(`ski_details_${index}`);
+            var boardForm = document.getElementById(`board_details_${index}`);
+
+            //Default reset all displays and requirements
+            const eqDiv = document.querySelectorAll('.eq-form')
+            const eqFields = document.querySelectorAll('.eq-field');
+            eqFields.forEach(element => {
+                element.removeAttribute("required");
+            });
+
+            // Show the selected form
+            if (equipmentType === 'ski') {
+                pk_type.style.display = 'block';
+                skiForm.style.display = 'block';
+                boardForm.style.display = 'none';
+
+                // Make fields for skiing required
+                document.getElementById('pk_type_' + index).setAttribute("required", "true");
+                document.getElementById('sk_height_' + index).setAttribute("required", "true");
+                document.getElementById('weight_' + index).setAttribute("required", "true");
+                document.getElementById('skier_type_' + index).setAttribute("required", "true");
+            } else if (equipmentType === 'snowboard') {
+                pk_type.style.display = 'block';
+                skiForm.style.display = 'none';
+                boardForm.style.display = 'block';
+
+                // Make fields for snowboarding required
+                document.getElementById('pk_type_' + index).setAttribute("required", "true");
+                document.getElementById('sn_height_' + index).setAttribute("required", "true");
+                document.getElementById('riding_style_' + index).setAttribute("required", "true");
+                document.getElementById('l_offset_' + index).setAttribute("required", "true");
+                document.getElementById('r_offset_' + index).setAttribute("required", "true");
+            }
+            if (equipmentType === 'snowshoe') {
+                skiForm.style.display = 'none';
+                boardForm.style.display = 'block';
+
+                // Make fields for snowboarding required
+                document.getElementById('pk_type_' + index).setAttribute("required", "true");
+                document.getElementById('sn_height_' + index).setAttribute("required", "true");
+                document.getElementById('riding_style_' + index).setAttribute("required", "true");
+                document.getElementById('l_offset_' + index).setAttribute("required", "true");
+                document.getElementById('r_offset_' + index).setAttribute("required", "true");
+            }
+        }
+    </script>
+
+    <script name="toggle_pickup_date">
+        // Get the checkbox and pickup date inputs
+        const pickupSameDay = document.getElementById('pickup_same_day');
+        const plPickupDate = document.getElementById('pickup_date_0');
+        var isPickupSameDay = true;
+
+        function togglePickUpDate() {
+            isPickupSameDay = !isPickupSameDay;
+
+            for (let i = 1; i < guestCount; i++) {
+                const guestPickUpDate = document.getElementById(`pickup_date_${i}`);
+                guestPickUpDate.disabled = isPickupSameDay;
+                
+            }
+
+            updateAllPickups();
+        }
+
+        // If everyone is picking up on the same day make sure to update them
+        // to match party leader's pick up date changes
+        plPickupDate.addEventListener('change', updateAllPickups);
+        function updateAllPickups() {
+            if (isPickupSameDay && (guestCount > 1)) {
+                for (let i = 1; i < guestCount; i++) {
+                    var guestPickUpDate = document.getElementById(`pickup_date_${i}`);
+                    guestPickUpDate.value = plPickupDate.value;
+                }
+            }
+        }
+    </script>
+
+    <script name="toggle_return_date">
+        // Get the checkbox and pickup date inputs
+        const returnSameDay = document.getElementById('return_same_day');
+        const plReturnDate = document.getElementById('rental_days_0');
+        var isReturnSameDay = true;
+
+        function toggleReturnDate() {
+            isReturnSameDay = !isReturnSameDay;
+
+            for (let i = 1; i < guestCount; i++) {
+                const guestReturnDate = document.getElementById(`rental_days_${i}`);
+                guestReturnDate.disabled = isReturnSameDay;
+            }
+
+            updateAllReturns();
+        }
+
+        // If everyone is picking up on the same day make sure to update them
+        // to match party leader's pick up date changes
+        plReturnDate.addEventListener('change', updateAllReturns);
+        function updateAllReturns() {
+            if (isReturnSameDay && (guestCount > 1)) {
+                for (let i = 1; i < guestCount; i++) {
+                    var guestReturnDate = document.getElementById(`rental_days_${i}`);
+                    guestReturnDate.value = plReturnDate.value;
+                }
+            }
+        }
+    </script>
+
+    <script name="review_details">
+        // Fills in the review details for all the guests
+        function fillReviewDetails() {
+            for (let i = 0; i < guestCount; i++) {
+                var birthdayInput = document.getElementById(`birthday_${i}`);
+                var equipmentInput = document.getElementById(`eq_type_${i}`);
+                var note = document.getElementById(`note_${i}`);
+
+                document.getElementById(`review_birthday_${i}`).innerHTML = birthdayInput.value;
+                document.getElementById(`review_eq_type_${i}`).innerHTML = equipmentInput.options[equipmentInput.selectedIndex].text;
+
+                // If it is the party leader display the telephone number
+                if (i == 0) {
+                    document.getElementById(`review_telephone`).innerHTML = document.getElementById(`telephone`).value;
+                }
+
+                // if (equipmentInput == 'ski') {
+                //     document.getElementById(`pk_type_${i}`);
+                //     document.getElementById(`sk_height_${i}`);
+                //     document.getElementById(`weight_${i}`);
+                //     document.getElementById(`skier_type_${i}`);
+                // }
+                // else if (guestEquipmentType.value == 'snowboard') {
+                //     document.getElementById(`pk_type_${i}`);
+                //     document.getElementById(`sn_height_${i}`);
+                //     document.getElementById(`riding_style_${i}`);
+                //     document.getElementById(`l_offset_${i}`);
+                //     document.getElementById(`r_offset_${i}`);
+                // }
+                document.getElementById(`review_pickup_date_${i}`).innerHTML = document.getElementById(`pickup_date_${i}`).value;
+                document.getElementById(`review_rental_days_${i}`).innerHTML = document.getElementById(`rental_days_${i}`).value;
+
+                // If notes is empty put in a placeholder
+                if (note.value.trim() === "") {
+                    note.value = "None";
+                }
+                document.getElementById(`review_note_${i}`).innerHTML = note.value;
+            }
+        }
+
+        function toggleReviewDetails(element) {
+            element.classList.toggle("expanded");
+        }
+    </script>
+</div>
+{% endblock %}

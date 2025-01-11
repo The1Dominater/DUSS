@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% block title %} Contact Us {% endblock %}
+
+{% block content %}
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .contact-info {
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <h2>We'd Love to Hear From You!</h2>
+    <p>Please fill out the form below, and we will get in touch with you as soon as possible.</p>
+
+    <form action="/submit_form" method="POST">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <div class="contact-info">
+        <h3>Our Office</h3>
+        <p>123 Business Street</p>
+        <p>Golden, CO 80002</p>
+        <p>Email: contact@duss.com</p>
+        <p>Phone: (123) 456-7890</p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %} Page Missing {% endblock %}
+
+{% block content %}
+<div>
+    <style>
+        .popup {
+            text-align: center;
+            background-color: white;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sad-face {
+            font-size: 100px;
+        }
+        .message {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .home-link {
+            font-size: 18px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
+    <body>
+        <div class="popup">
+            <div class="sad-face">😢</div>
+            <div class="message">Unfortunately teh page you are trying to load is unavailable.</div>
+            <a href="/" class="home-link" id="home">Back to Home</a>
+        </div>
+    </body>
+</div>
+{$ endblock %}

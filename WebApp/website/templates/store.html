@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+    .store {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    .item {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 10px;
+        width: 600px;
+        text-align: center;
+    }
+    .item img {
+        max-width: 100%;
+        height: auto;
+    }
+    .add-to-cart {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+<div align="center">
+    <h1>Dom&#39;s Ultimate Ski and Snowboards</h1>
+    <body>
+        <img src="{{ url_for('static', filename='images/ski-equipment-panoramic-view-matterhorn.jpg')}}" alt="Mountain Pano" hieght="130" width="700">
+    </body>
+</div>
+<body>
+    <div class="store">
+        {% for item in items %}
+        <div class="item">
+            <img src="{{url_for('static',filename='images/ski_stockphoto.jpg')}}" alt="Item 1">
+            <h2>{{ item.display_name }}</h2>
+            <p>{{ item.description }}</p>
+            <p>Price: ${{ item.price }}</p>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

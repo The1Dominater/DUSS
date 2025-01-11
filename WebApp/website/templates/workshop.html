@@ -1,0 +1,166 @@
+{% extends "base.html" %} {% block title %} Workshop Services {% endblock %}
+
+{% block content %}
+<h1 align="center">Dom's Workshop Form</h1>
+<form method="POST">
+    <div>
+        <h3>Equipment information</h3>
+        <p>The details provided must describe the equipment brought into the shop!</p>
+        <div class="form-group" id="equipment_details">
+            <label for="equipment_type">Equipment Type</label>
+            <select class="form-control" id="equipment_type" name="equipment_type">
+                <option value="ski">Ski</option>
+                <option value="snowboard">Snowboard</option>
+                <option value="other">Other</option>
+            </select>
+            <label for="brand">Brand or Manufacturer</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="brand" 
+                name="brand" 
+                placeholder="Enter brand/manufacturer"
+            />
+            <label for="model">Model</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="model" 
+                name="model" 
+                placeholder="Enter model"
+            />
+        </div>
+    </div>
+    <div>
+        <h3>User information</h3>
+        <p>The details provided must describe the person using the equipment!</p>
+        <div class="form-group" id="ski_details" style="display:block;">
+            <label for="height">Height</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="height" 
+                name="height" 
+                placeholder="Enter height"
+            />
+            <select class="form-control" id="hUnit" name="hUnit">
+                <option value="in">in</option>
+                <option value="cm">cm</option>
+            </select>
+            <label for="weight">Weight</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="weight" 
+                name="weight" 
+                placeholder="Enter weight"
+            />
+            <select class="form-control" id="wUnit" name="wUnit">
+                <option value="lbs">lbs</option>
+                <option value="kg">kg</option>
+            </select>
+            <label for="skier_type">Skier Type</label>
+            <select class="form-control" id="skier_type" name="skier_type">
+                <option value="type_i">I - Beginner</option>
+                <option value="type_ii">II - Intermediate</option>
+                <option value="type_iii">III - Advanced</option>
+            </select>
+        </div>
+        <div class="form-group" id="board_details" style="display:none;">
+            <label for="riding_style">Riding Style</label>
+            <select class="form-control" id="riding_style" name="riding_style">
+                <option value="goofy">Goofy-Right foot forward</option>
+                <option value="regular">Regular-Left foot forward</option>
+            </select>
+            <label for="l_offset">Left Foot Offset</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="l_offset" 
+                name="l_offset" 
+                placeholder="Enter left offset"
+                min="-90"
+                max="90"
+                step="1"
+            />
+            <label for="r_offset">right Foot Offset</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="r_offset" 
+                name="r_offset" 
+                placeholder="Enter right offset"
+                min="-90"
+                max="90"
+                step="1"
+            />
+        </div>
+        <div class="form">
+            <label for="age">Age</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="age" 
+                name="age" 
+                placeholder="Enter age"
+                min="0"
+                max="120"
+                step="1"
+            />
+            <label for="phone_num">Phone Number</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="phone_num" 
+                name="phone_num" 
+                placeholder="Enter a 9-digit phone number"
+                max="9999999999"
+                step="1"
+            />
+        </div>
+        <br />
+    </div>
+    <div>
+        <h3>Workshop Services</h3>
+        <p>All workshop services are pay in advance!</p>
+        <div class="form-group">
+            <input type="checkbox" class="form-check-input" id="full_tune" name="full_tune">
+            <label for="full_tune">Full Tune($75): Wax,Edge-Sharpening,Damage-Filling</label><br>
+            <input type="checkbox" class="form-check-input" id="minor_tune" name="minor_tune" value="minor_tune">
+            <label for="minor_tune">Minor Tune($55): Wax,Edge-Sharpening</label><br>
+            <input type="checkbox" class="form-check-input" id="hot_wax" name="hot_wax" value="hot_wax">
+            <label for="hot_wax">Hot Wax($35)</label><br>
+            <input type="checkbox" class="form-check-input" id="bind_mount" name="bind_mount" value="bind_mount">
+            <label for="bind_mount">Binding Mount($80)</label><br>
+            <input type="checkbox" class="form-check-input" id="bind_adj" name="bind_adj" value="bind_adj">
+            <label for="bind_adj">Binding Adjustment($20)</label><br>
+            <input type="checkbox" class="form-check-input" id="bind_test" name="bind_test" value="bind_test">
+            <label for="bind_test">Binding Safety Test($15)</label><br>
+            
+        </div>
+    </div>
+
+    <script>
+        // Get the elements
+        const equipmentTypeSelect = document.getElementById('equipment_type');
+        const skiDetailsDiv = document.getElementById('ski_details');
+        const boardDetailsDiv = document.getElementById('board_details');
+    
+        // If ski's are select, display ski details form
+        equipmentTypeSelect.addEventListener('change', function() {
+            if (equipmentTypeSelect.value === 'snowboard') {
+                skiDetailsDiv.style.display = 'none';  // Show ski details field
+                boardDetailsDiv.style.display = 'block';
+            } else if (equipmentTypeSelect.value === 'other') {
+                skiDetailsDiv.style.display = 'none';
+                boardDetailsDiv.style.display = 'none';   // Hide ski details field
+            } else {
+                skiDetailsDiv.style.display = 'block';  // Show ski details field
+                boardDetailsDiv.style.display = 'none';
+            }
+        });
+    </script>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit Request</button>
+</form>
+{% endblock %}

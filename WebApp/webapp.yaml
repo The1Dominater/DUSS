@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: duss-webapp
+  labels:
+    app: duss-webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: duss-webapp
+  template:
+    metadata:
+      labels:
+        app: duss-webapp
+    spec:
+      containers:
+      - name: duss-webapp
+        image: doga4097/dusswebapp:latest
+        ports:
+          - containerPort: 5000
+        env:
+          - name: FLASK_PORT
+            value: "5000"
+          - name: DATABASE_URL
+            #value: "postgresql://admin:GoofyAdmin@postgres-svc.postgresql.svc.cluster.local:5432/dussdb"
+            value:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: duss-webapp-svc
+  labels:
+    app: duss-webapp
+spec:
+  selector:
+    app: duss-webapp
+  ports:
+  - protocol: "TCP"
+    port: 5000
+    targetPort: 5000

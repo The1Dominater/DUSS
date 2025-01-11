@@ -1,0 +1,61 @@
+model,brand,display_name,description,price,quantity,serial_number
+BC 120 2024,Atomic,Ben Chetlers 120,A wide ski!,650
+GT 3000,Burton,Freestyle Snowboard,High performance board,500
+X1000,Salomon,Speed Pro Ski,Fast and light,700
+Z2000,Rossignol,All Mountain Ski,Versatile all-mountain ski,620
+S2100,K2,Freeride Ski,For powder lovers,750
+A1500,Lib Tech,Pro Snowboard,For aggressive riders,530
+B1200,Ride,Twin Snowboard,Perfect for freestyle,480
+M3500,Burton,Backcountry Snowboard,Built for deep snow,850
+Y2000,Dynastar,Ski Xtreme,High-speed performance,780
+F1100,Armada,Park Ski,Ideal for jumps and rails,500
+C900,Volkl,Racing Ski,For speed lovers,700
+D1600,Head,Ski Pro,Precision on the slopes,670
+N3000,Salomon,All Mountain Ski,Good for all conditions,590
+E1400,Atomic,Cruiser Ski,Great for carving,600
+H1700,K2,Powder Ski,For deep snow exploration,760
+T1800,Rossignol,Speed Ski,For aggressive skiers,720
+J1100,Lib Tech,Shred Snowboard,Ride with style,540
+L2200,Burton,Powder Snowboard,For expert riders,800
+P300,Head,All Terrain Ski,Versatile ski for varied conditions,550
+Q4000,Volkl,Mountain Ski,For high-altitude challenges,830
+H001,North Face,Wool Beanie,Warm and cozy wool beanie,35
+G010,Columbia,Thermal Gloves,Insulated gloves for cold weather,45
+C100,Patagonia,Down Jacket,Lightweight and warm down jacket,150
+H002,Under Armour,Sports Cap,Breathable and moisture-wicking,25
+G020,Marmot,Waterproof Gloves,Perfect for snow and rain,60
+C110,Arc'teryx,Thermal Coat,High-performance winter coat,220
+H003,Columbia,Fleece Hat,Soft fleece hat for extra warmth,30
+G030,Outdoor Research,Heavy-duty Gloves,Rugged and durable gloves,75
+C120,Patagonia,Insulated Coat,Eco-friendly insulated coat,180
+H004,Marmot,Beanie Hat,Lightweight hat for all-day wear,28
+G040,North Face,Heated Gloves,Battery-powered heated gloves,120
+C130,Columbia,Waterproof Coat,Weatherproof coat for all seasons,200
+H005,Arc'teryx,Balaclava,Full face cover for extreme cold,40
+G050,Under Armour,Running Gloves,Breathable gloves for active wear,35
+C140,Mountain Hardwear,Expedition Coat,Extreme weather protection,350
+H006,Patagonia,Sun Hat,Lightweight and protective sun hat,38
+G060,Outdoor Research,Snow Gloves,Insulated gloves for snow sports,65
+C150,Helly Hansen,Insulated Ski Jacket,Perfect for skiing and snowboarding,280
+H007,Marmot,Knitted Hat,Warm knitted hat for winter,32
+G070,Mountain Hardwear,Windproof Gloves,Windproof gloves for outdoor activities,70
+SB001,Burton,Custom Snowboard,All-mountain snowboard with great flex,550
+SB002,Salomon,Speedster Snowboard,Perfect for high-speed riders,620
+SB003,K2,Freestyle Snowboard,Built for park and freestyle tricks,500
+SB004,Ride,MTN Snowboard,"For all conditions, including powder",570
+SB005,Lib Tech,Banana Snowboard,Fun and versatile board for all riders,650
+SB006,Burton,Deep Powder Snowboard,Wide board for deep snow conditions,700
+SB007,Rossignol,Experience Snowboard,Great for carving and freeride,590
+SB008,Jones,Flagship Snowboard,Designed for powder and big mountain riding,750
+SB009,DC,Superpark Snowboard,Durable and responsive board for the park,480
+SB010,Nidecker,Helios Snowboard,Perfect balance of performance and comfort,580
+SB_B001,Burton,Ion Snowboard Boot,All-mountain performance boot,350
+SB_B002,Salomon,Falcon Snowboard Boot,Quick lacing system and great comfort,320
+SB_B003,K2,T1 Snowboard Boot,Durable and comfortable for all-day riding,280
+SB_B004,Northwave,Decade Snowboard Boot,Pro-level support and comfort,380
+SB_B005,ThirtyTwo,Lashed Snowboard Boot,Great flex and comfort for freestyle,250
+SB_B006,Ride,Luxe Snowboard Boot,Ideal for all-terrain riders,270
+SB_B007,Vans,Hi-Standard Snowboard Boot,Classic comfort and performance,240
+SB_B008,DC,Judge Snowboard Boot,Supportive boot for aggressive riding,300
+SB_B009,Burton,Ruler Snowboard Boot,Durable and responsive for all conditions,330
+SB_B010,Nike,Zoom Force Snowboard Boot,Responsive boot with great grip,350
